@@ -29,8 +29,28 @@ const fetchedWeather = function(city) {
     });
 };
 
+const submitForm = function(event) {
+    event.preventDefault();
+    const city = citySearchInput.ariaValueMax.trim();
+    if (city) {
+        fetchedWeather(city);
+        fiveDayDisplay(city);
+        searchedCityHistory.unshift({city});
+        citySearchInput.value = '';
+    } else {
+        alert('Please enter a city');
+    }
+    storage();
+    oldData(city);
+};
+
 const displayWeather = function (weather, citySearch) {
+    // resetting previous data
     currentWeather.textContent = '';
-    searchedCity.textContent = citySearch
+    searchedCity.textContent = citySearch;
+
+    //creating icons to display with the respective weather
+    
 }
+
 
