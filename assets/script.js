@@ -3,7 +3,7 @@ const currentWeather = document.getElementById('current_weather');
 const fiveDayForecast = document.getElementById('five-day-container');
 const selectCity = document.getElementById('#city-search-form');
 const citySearchInput = document.querySelector('city-search-input');
-const searchedCity = document.getElementById('#searched-City');
+const searchedCity = document.getElementById('#searched-city');
 const forecastTitle = document.getElementById('#forecast');
 const oldSearch = document.getElementById('#old_buttons')
 
@@ -49,8 +49,20 @@ const displayWeather = function (weather, citySearch) {
     currentWeather.textContent = '';
     searchedCity.textContent = citySearch;
 
-    //creating icons to display with the respective weather
-    
-}
+    //icons to display with the respective weather
+    const weatherIcon = document.createElement('img')
+
+    weatherIcon.setAttribute('src', `https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`);
+    searchedCity.appendChild(weatherIcon);
+
+    const todayWeather = document.createElement('span');
+    todayWeather.textContent= " (" + moment(weather.dt.value).format("MMM D, YYYY") + ") ";
+    searchedCity.appendChild(todayWeather);
+};
+
+// fulfilling acceptance criteria of temperature, humidity, and wind
+const displayTemp = document.createElement('span');
+const displayHum = document.createElement('span');
+const displayWind = document.createElement('span');
 
 
