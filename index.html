@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Weather Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/style.css">
+  </head>
+  <body>
+
+    <header class="text-center p-4">
+        <h1>Weather Dashboard</h1>
+    </header>
+
+    <main class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-md-3 p-2 search-column">
+                <form class="border p-2" id="city-search-form">
+                    <h3><em>Search for a City!</em></h3>
+                    <input id="city-search-input" type="text" autofocus="true" class="form-input"/>
+                    <button class="btn btn-primary" id="search-button" type="submit">Search</button>
+                </form>
+                <div class="old-border" id="old_buttons"></div>
+            </div>
+            <div class="col-12 col-md-9">
+                <div class="row border selected-city" id="current_forecast">
+                    <div class="col-12">
+                        <h2 id="searched-city"></h2>
+                        <div id="current_weather" class="together"></div>
+                    </div>
+                </div>
+                <div class="row border" id="five-day-forecast">
+                    <h2 class="col-12" id="forecast"></h2>
+                    <div class="d-flex" id="five-day-container"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+	<script src="./assets/script.js"></script>
+  </body>
+</html>
