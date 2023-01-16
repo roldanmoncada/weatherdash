@@ -35,14 +35,14 @@ const submitForm = function (event) {
   const city = citySearchInput.value.trim(); // changed city from a const to a var since I want to reuse it in a future function. I imagine that's a bad practice, but adding more to the name would be confusing for now.
   if (city) {
     fetchedWeather(city);
-    fiveDayDisplay(city);
+    fiveDayData(city);
     searchedCityHistory.unshift({ city });
     citySearchInput.value = "";
   } else {
     alert("Please enter a city");
   }
   storage();
-  oldData(city);
+//   oldData(city);
 };
 
 const displayWeather = function (weather, city) { // renamed data from line 28 to weather to suit this function's purposes better.
@@ -84,7 +84,7 @@ const displayWeather = function (weather, city) { // renamed data from line 28 t
 
 const fiveDayData = function(city) {
     const apiKey = '2a4c413c2fcf568dc55c7b3c51123635';
-    const queryURL = `http://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${apiKey}`;
+    const queryURL = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`;
 
     fetch(queryURL)
     .then(function(response){
@@ -96,6 +96,7 @@ const fiveDayData = function(city) {
 
 // function for the five day forecast. bringing in the data from line 92 as 'weather' parameter for this fully defined version of the function.
 const fiveDayDisplay = function (weather) {
+    console.log(weather)
     fiveDayForecast.textContent = ''
     forecastTitle.textContent = '5-Day Forecast:'
 
