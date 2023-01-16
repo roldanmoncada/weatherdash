@@ -25,7 +25,7 @@ const fetchedWeather = function (city) {
 
   fetch(queryURL).then(function (response) {
     response.json().then(function (data) {
-      displayWeather(data, city);
+      displayWeather(data);
     });
   });
 };
@@ -45,10 +45,10 @@ const submitForm = function (event) {
   oldData(city);
 };
 
-const displayWeather = function (weather, citySearch) {
+const displayWeather = function (weather, city) { // renamed data from line 28 to weather to suit this function's purposes better.
   // resetting previous data
   currentWeather.textContent = "";
-  searchedCity.textContent = citySearch;
+  searchedCity.textContent = city;
 
   //icons to display with the respective weather
   const weatherIcon = document.createElement("img");
@@ -73,7 +73,7 @@ const displayWeather = function (weather, citySearch) {
   displayTemp.classList = "together-item";
   displayWind.textContent = "Wind: " + weather.wind.speed + "MPH";
   displayWind.classList = "together-item";
-  displayHumidity.textContent = "Humidity: " + weather.humidity.speed + " %";
+  displayHumidity.textContent = "Humidity: " + weather.main.humidity + " %";
   displayHumidity.classList = "together-item";
 
   currentWeather.appendChild(displayTemp);
@@ -81,4 +81,33 @@ const displayWeather = function (weather, citySearch) {
   currentWeather.appendChild(displayHumidity);
 };
 
-console.log(displayWeather)
+
+const fiveDayData = function(city) {
+    const apiKey = '2a4c413c2fcf568dc55c7b3c51123635';
+    const queryURL = `http://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${apiKey}`;
+
+    fetch(queryURL)
+    .then(function(response){
+        response.json().then(function(data) {
+            fiveDayDisplay(data)
+        })
+    })
+}
+
+// function for the five day forecast. bringing in the data from line 92 as 'weather' parameter for this fully defined version of the function.
+const fiveDayDisplay = function (weather) {
+    fiveDayForecast.textContent = ''
+    forecastTitle.textContent = '5-Day Forecast:'
+
+    const forecast = weather.list;
+    for (let i = 5; i < array.length; i++) {
+        const dailyForecast = forecast[i];
+        
+    }
+}
+
+const old_data = function(oldData){
+
+};
+
+selectCity.addEventListener('submit', submitForm);
