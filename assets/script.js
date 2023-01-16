@@ -99,10 +99,28 @@ const fiveDayDisplay = function (weather) {
     fiveDayForecast.textContent = ''
     forecastTitle.textContent = '5-Day Forecast:'
 
-    const forecast = weather.list;
-    for (let i = 5; i < array.length; i++) {
+    var forecast = weather.list;
+    for (let i = 5; i < forecast.length; i+i+8) {
         const dailyForecast = forecast[i];
         
+        const htmlForecast = document.createElement('div');
+        htmlForecast.classList = 'card bg-primary'
+
+        const forecastDate = document.createElement('h4');
+        const weatherIcon = document.createElement('img');
+        const displayTemp = document.createElement('span');
+        const displayHumidity = document.createElement("span");
+        const displayWind = document.createElement("span");
+
+        weatherIcon.classList = 'card-body text-center';
+        weatherIcon.setAttribute(
+            "src",
+            `https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`
+          );
+
+          displayTemp.classList = 'card-body text-center';
+          displayHumidity = 'card-body text-center';
+          displayWind = 'card-body text-center';
     }
 }
 
