@@ -61,7 +61,7 @@ const displayWeather = function (weather, city) { // renamed data from line 28 t
 
   const todayWeather = document.createElement("span");
   todayWeather.textContent =
-    " (" + moment(weather.dt.value).format("MMM D, YYYY") + ") ";
+    " (" + moment(weather.dt.value).format("MM D, YYYY") + ") ";
   searchedCity.appendChild(todayWeather);
 
   // fulfilling acceptance criteria of temperature, humidity, and wind (moved up into the displayWeather function)
@@ -115,17 +115,31 @@ const fiveDayDisplay = function (weather) {
         weatherIcon.classList = 'card-body text-center';
         weatherIcon.setAttribute(
             "src",
-            `https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`
+            `https://openweathermap.org/img/wn/${dailyForecast.weather[0].icon}@2x.png`
           );
 
           displayTemp.classList = 'card-body text-center';
-          displayHumidity = 'card-body text-center';
-          displayWind = 'card-body text-center';
+          displayHumidity.classList = 'card-body text-center';
+          displayWind.classList = 'card-body text-center';
+
+        forecastDate.textContent = moment.unix(dailyForecast.dt).format('MM D, YYYY');
+        forecastDate.classList = 'card-header text-center';
+
+          htmlForecast.appendChild(forecastDate);
+          htmlForecast.appendChild(weatherIcon);
+          displayTemp.textContent = dailyForecast.main.temp + ' °F';
+          htmlForecast.appendChild(displayTemp);
+          displayWind.textContent = dailyForecast.main.wind + ' MPH';
+          htmlForecast.appendChild(displayWind);
+          displayHumidity.textContent = dailyForecast.main.humidity + ' %';
+          htmlForecast.appendChild(displayHumidity);
+
+          fiveDayForecast.appendChild(htmlForecast);
     }
 }
 
-const old_data = function(oldData){
+// const old_data = function(oldData){
 
-};
+// };
 
 selectCity.addEventListener('submit', submitForm);
