@@ -32,7 +32,7 @@ const fetchedWeather = function (city) {
 
 const submitForm = function (event) {
   event.preventDefault();
-  var city = citySearchInput.value.trim(); // changed city from a const to a var since I want to reuse it in a future function. I imagine that's a bad practice, but adding more to the name would be confusing for now.
+  const city = citySearchInput.value.trim(); // changed city from a const to a var since I want to reuse it in a future function. I imagine that's a bad practice, but adding more to the name would be confusing for now.
   if (city) {
     fetchedWeather(city);
     fiveDayDisplay(city);
@@ -48,7 +48,7 @@ const submitForm = function (event) {
 const displayWeather = function (weather, city) { // renamed data from line 28 to weather to suit this function's purposes better.
   // resetting previous data
   currentWeather.textContent = "";
-  searchedCity.textContent = city;
+  searchedCity.textContent = city + ':';
 
   //icons to display with the respective weather
   const weatherIcon = document.createElement("img");
@@ -100,6 +100,7 @@ const fiveDayDisplay = function (weather) {
     forecastTitle.textContent = '5-Day Forecast:'
 
     var forecast = weather.list;
+    console.log(forecast)
     for (let i = 5; i < forecast.length; i+i+8) {
         const dailyForecast = forecast[i];
         
