@@ -19,36 +19,49 @@ const storage = function () {
 };
 
 // function to fetch the weather from the openweather api
-const fetchedWeather = function (city) {
+const fetchedWeather = function (search) {
   const apiKey = "340e39086762db2800dbd311a15215aa";
-  const queryURL = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`;
+  const queryURL = `http://api.openweathermap.org/geo/1.0/direct?q=${search}&limit=5&appid=${apiKey}`;
 
   fetch(queryURL).then(function (response) {
     response.json().then(function (data) {
-      displayWeather(data);
+      getWeather(data[0]);
     });
   });
 };
 
-const submitForm = function (event) {
-  event.preventDefault();
-  const city = citySearchInput.value.trim(); // changed city from a const to a var since I want to reuse it in a future function. I imagine that's a bad practice, but adding more to the name would be confusing for now.
-  if (city) {
-    fetchedWeather(city);
-    fiveDayData(city);
-    searchedCityHistory.unshift({ city });
-    citySearchInput.value = "";
-  } else {
-    alert("Please enter a city");
-  }
-  storage();
-//   oldData(city);
-};
+function getWeather(location) {
+  const apiKey = "340e39086762db2800dbd311a15215aa";
+  const { lat } = location;
+  const { lon } = location;
+  const city = location.name;
 
-const displayWeather = function (weather, city) { // renamed data from line 28 to weather to suit this function's purposes better.
+  const queryURL = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`;
+
+  fetch(queryURL)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      renderWeather(city, data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+
+function renderWeather(city, data) {
+  displayWeather(city, data.list[0], data.city.timezone);
+
+  fiveDayDisplay(data.list);
+  console.log(data.list, "<--- fiveDayDisplay data");
+}
+
+const displayWeather = function (city, weather) {
+  // renamed data from line 28 to weather to suit this function's purposes better.
   // resetting previous data
   currentWeather.textContent = "";
-  searchedCity.textContent = city + ':';
+  searchedCity.textContent = city + ":";
 
   //icons to display with the respective weather
   const weatherIcon = document.createElement("img");
@@ -61,7 +74,7 @@ const displayWeather = function (weather, city) { // renamed data from line 28 t
 
   const todayWeather = document.createElement("span");
   todayWeather.textContent =
-    " (" + moment(weather.dt.value).format("MM D, YYYY") + ") ";
+    " (" + moment(weather.dt.value).format("MMM D, YYYY") + ") ";
   searchedCity.appendChild(todayWeather);
 
   // fulfilling acceptance criteria of temperature, humidity, and wind (moved up into the displayWeather function)
@@ -81,67 +94,82 @@ const displayWeather = function (weather, city) { // renamed data from line 28 t
   currentWeather.appendChild(displayHumidity);
 };
 
+const fiveDayData = function (city) {
+  const apiKey = "2a4c413c2fcf568dc55c7b3c51123635";
+  const queryURL = `http://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${apiKey}`;
 
-const fiveDayData = function(city) {
-    const apiKey = '2a4c413c2fcf568dc55c7b3c51123635';
-    const queryURL = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`;
-
-    fetch(queryURL)
-    .then(function(response){
-        response.json().then(function(data) {
-            fiveDayDisplay(data)
-        })
-    })
-}
+  fetch(queryURL).then(function (response) {
+    response.json().then(function (data) {
+      fiveDayDisplay(data);
+    });
+  });
+};
 
 // function for the five day forecast. bringing in the data from line 92 as 'weather' parameter for this fully defined version of the function.
-const fiveDayDisplay = function (weather) {
-    console.log(weather)
-    fiveDayForecast.textContent = ''
-    forecastTitle.textContent = '5-Day Forecast:'
+const fiveDayDisplay = function (fiveDayWeather) {
+  console.log(fiveDayWeather, "<---fiveDayWeather");
+  fiveDayForecast.textContent = "";
+  forecastTitle.textContent = "5-Day Forecast:";
 
-    var forecast = weather.list;
-    console.log(forecast)
-    for (let i = 5; i < forecast.length; i+i+8) {
-        const dailyForecast = forecast[i];
-        
-        const htmlForecast = document.createElement('div');
-        htmlForecast.classList = 'card bg-primary'
+  // var forecast = weather.list;
+  console.log(forecast);
+  for (let i = 0; i < fiveDayWeather.length; i++) {
+    const dailyForecast = fiveDayWeather[i];
 
-        const forecastDate = document.createElement('h4');
-        const weatherIcon = document.createElement('img');
-        const displayTemp = document.createElement('span');
-        const displayHumidity = document.createElement("span");
-        const displayWind = document.createElement("span");
+    const htmlForecast = document.createElement("div");
+    htmlForecast.classList = "card bg-primary";
 
-        weatherIcon.classList = 'card-body text-center';
-        weatherIcon.setAttribute(
-            "src",
-            `https://openweathermap.org/img/wn/${dailyForecast.weather[0].icon}@2x.png`
-          );
+    const forecastDate = document.createElement("h4");
+    const weatherIcon = document.createElement("img");
+    const displayTemp = document.createElement("span");
+    const displayHumidity = document.createElement("span");
+    const displayWind = document.createElement("span");
 
-          displayTemp.classList = 'card-body text-center';
-          displayHumidity.classList = 'card-body text-center';
-          displayWind.classList = 'card-body text-center';
+    weatherIcon.classList = "card-body text-center";
+    weatherIcon.setAttribute(
+      "src",
+      `https://openweathermap.org/img/wn/${dailyForecast.weather[0].icon}@2x.png`
+    );
 
-        forecastDate.textContent = moment.unix(dailyForecast.dt).format('MM D, YYYY');
-        forecastDate.classList = 'card-header text-center';
+    displayTemp.classList = "card-body text-center";
+    displayHumidity.classList = "card-body text-center";
+    displayWind.classList = "card-body text-center";
 
-          htmlForecast.appendChild(forecastDate);
-          htmlForecast.appendChild(weatherIcon);
-          displayTemp.textContent = dailyForecast.main.temp + ' °F';
-          htmlForecast.appendChild(displayTemp);
-          displayWind.textContent = dailyForecast.main.wind + ' MPH';
-          htmlForecast.appendChild(displayWind);
-          displayHumidity.textContent = dailyForecast.main.humidity + ' %';
-          htmlForecast.appendChild(displayHumidity);
+    forecastDate.textContent = moment
+      .unix(dailyForecast.dt)
+      .format("MMM D, YYYY");
+    forecastDate.classList = "card-header text-center";
 
-          fiveDayForecast.appendChild(htmlForecast);
-    }
-}
+    htmlForecast.appendChild(forecastDate);
+    htmlForecast.appendChild(weatherIcon);
+    displayTemp.textContent = dailyForecast.main.temp + " °F";
+    htmlForecast.appendChild(displayTemp);
+    displayWind.textContent = dailyForecast.wind.speed + " MPH";
+    htmlForecast.appendChild(displayWind);
+    displayHumidity.textContent = dailyForecast.main.humidity + " %";
+    htmlForecast.appendChild(displayHumidity);
+
+    fiveDayForecast.appendChild(htmlForecast);
+  }
+};
 
 // const old_data = function(oldData){
 
 // };
 
-selectCity.addEventListener('submit', submitForm);
+const submitForm = function (event) {
+  event.preventDefault();
+  const search = citySearchInput.value.trim(); // changed city from a const to a var since I want to reuse it in a future function. I imagine that's a bad practice, but adding more to the name would be confusing for now.
+  if (search) {
+    fetchedWeather(search);
+    // fiveDayData(search);
+    searchedCityHistory.unshift({ search });
+    citySearchInput.value = "";
+  } else {
+    alert("Please enter a city");
+  }
+  storage();
+  //   oldData(city);
+};
+
+selectCity.addEventListener("submit", submitForm);
