@@ -21,7 +21,7 @@ const storage = function () {
 // function to fetch the weather from the openweather api
 const fetchedWeather = function (search) {
   const apiKey = "340e39086762db2800dbd311a15215aa";
-  const queryURL = `http://api.openweathermap.org/geo/1.0/direct?q=${search}&limit=5&appid=${apiKey}`;
+  const queryURL = `https://api.openweathermap.org/geo/1.0/direct?q=${search}&limit=5&appid=${apiKey}`;
 
   fetch(queryURL).then(function (response) {
     response.json().then(function (data) {
