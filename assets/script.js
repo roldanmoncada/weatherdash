@@ -36,7 +36,7 @@ function getWeather(location) {
   const { lon } = location;
   const city = location.name;
 
-  const queryURL = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`;
+  const queryURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`;
 
   fetch(queryURL)
     .then(function (response) {
@@ -96,7 +96,7 @@ const displayWeather = function (city, weather) {
 
 const fiveDayData = function (city) {
   const apiKey = "2a4c413c2fcf568dc55c7b3c51123635";
-  const queryURL = `http://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${apiKey}`;
+  const queryURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${apiKey}`;
 
   fetch(queryURL).then(function (response) {
     response.json().then(function (data) {
